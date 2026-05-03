@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Get a Quote — George Tobias</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#08080f;--border:rgba(255,255,255,.08);--muted:rgba(255,255,255,.32);--purple:#a78bfa;--cyan:#38bdf8;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);font-family:'Inter',sans-serif;color:#fff;min-height:100vh;overflow-x:hidden;}
+
+.bg-glow{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.bg-glow::before{content:'';position:absolute;top:-20%;left:-10%;width:60%;height:60%;background:radial-gradient(ellipse,rgba(124,58,237,.18) 0%,transparent 70%);animation:drift1 9s ease-in-out infinite alternate;}
+.bg-glow::after{content:'';position:absolute;bottom:-20%;right:-10%;width:55%;height:55%;background:radial-gradient(ellipse,rgba(56,189,248,.13) 0%,transparent 70%);animation:drift2 11s ease-in-out infinite alternate;}
+@keyframes drift1{from{transform:translate(0,0);}to{transform:translate(40px,25px);}}
+@keyframes drift2{from{transform:translate(0,0);}to{transform:translate(-30px,-20px);}}
+
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 6vw;height:64px;background:rgba(8,8,15,.8);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.logo{font-size:16px;font-weight:700;letter-spacing:-.03em;color:#fff;text-decoration:none;}
+.logo em{font-style:normal;background:linear-gradient(110deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.nav-back{font-size:13px;color:var(--muted);text-decoration:none;transition:color .2s;}
+.nav-back:hover{color:#fff;}
+
+main{position:relative;z-index:1;padding:100px 20px 80px;display:flex;flex-direction:column;align-items:center;}
+
+.page-header{text-align:center;margin-bottom:48px;max-width:560px;}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:rgba(167,139,250,.08);border:1px solid rgba(167,139,250,.2);border-radius:100px;padding:5px 14px;font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--purple);margin-bottom:20px;}
+.eyebrow span{width:6px;height:6px;border-radius:50%;background:var(--purple);box-shadow:0 0 8px var(--purple);animation:pdot 2s ease-in-out infinite;}
+@keyframes pdot{0%,100%{opacity:1;}50%{opacity:.3;}}
+.page-header h1{font-size:clamp(2rem,5vw,3rem);font-weight:800;letter-spacing:-.04em;line-height:1.1;margin-bottom:14px;}
+.page-header h1 em{font-style:normal;background:linear-gradient(110deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+.page-header p{font-size:15px;color:var(--muted);line-height:1.7;}
+
+/* form card */
+.form-card{width:100%;max-width:640px;background:rgba(255,255,255,.04);backdrop-filter:blur(32px);border:1px solid rgba(255,255,255,.1);border-top:1px solid rgba(255,255,255,.18);border-radius:24px;padding:48px 44px;box-shadow:inset 0 1px 0 rgba(255,255,255,.08),0 40px 100px rgba(0,0,0,.4);}
+
+.step{display:none;}
+.step.active{display:block;}
+
+.step-indicator{display:flex;align-items:center;gap:8px;margin-bottom:36px;}
+.step-dot{width:28px;height:28px;border-radius:50%;border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--muted);transition:all .3s;flex-shrink:0;}
+.step-dot.done{background:rgba(167,139,250,.15);border-color:rgba(167,139,250,.4);color:var(--purple);}
+.step-dot.active{background:linear-gradient(135deg,#7c3aed,#2563eb);border-color:transparent;color:#fff;box-shadow:0 0 16px rgba(124,58,237,.4);}
+.step-line{flex:1;height:1px;background:var(--border);transition:background .3s;}
+.step-line.done{background:rgba(167,139,250,.4);}
+
+.step-title{font-size:18px;font-weight:700;letter-spacing:-.02em;margin-bottom:6px;}
+.step-sub{font-size:13px;color:var(--muted);margin-bottom:28px;line-height:1.5;}
+
+.form-group{margin-bottom:20px;}
+label{display:block;font-size:12px;font-weight:500;color:rgba(255,255,255,.55);margin-bottom:7px;letter-spacing:.3px;}
+input,textarea,select{width:100%;padding:13px 16px;background:rgba(255,255,255,.05);border:1px solid var(--border);border-radius:10px;color:#fff;font:400 14px 'Inter',sans-serif;outline:none;transition:border-color .2s,background .2s;resize:vertical;}
+input::placeholder,textarea::placeholder{color:rgba(255,255,255,.2);}
+input:focus,textarea:focus,select:focus{border-color:rgba(167,139,250,.5);background:rgba(167,139,250,.04);}
+select{cursor:pointer;appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1l5 5 5-5' stroke='rgba(255,255,255,.3)' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;}
+select option{background:#1a1a2e;color:#fff;}
+textarea{min-height:110px;}
+
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+
+/* vibe pills */
+.vibe-wrap{display:flex;flex-wrap:wrap;gap:8px;margin-top:2px;}
+.vibe-pill{padding:8px 16px;border-radius:100px;border:1px solid var(--border);background:rgba(255,255,255,.04);font-size:13px;color:var(--muted);cursor:pointer;transition:all .2s;user-select:none;}
+.vibe-pill:hover{border-color:rgba(167,139,250,.4);color:#fff;}
+.vibe-pill.selected{background:rgba(167,139,250,.12);border-color:rgba(167,139,250,.5);color:var(--purple);}
+
+/* nav buttons */
+.btn-row{display:flex;gap:12px;margin-top:32px;}
+.btn-next{flex:1;padding:14px;background:linear-gradient(135deg,#7c3aed,#2563eb);color:#fff;border:none;border-radius:10px;font:600 15px 'Inter',sans-serif;cursor:pointer;transition:transform .15s,box-shadow .15s;box-shadow:0 0 24px rgba(124,58,237,.3);}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 0 40px rgba(124,58,237,.5);}
+.btn-back{padding:14px 24px;background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:10px;font:500 14px 'Inter',sans-serif;cursor:pointer;transition:all .2s;}
+.btn-back:hover{border-color:rgba(255,255,255,.3);color:#fff;}
+
+/* success */
+#success{display:none;text-align:center;padding:20px 0;}
+.success-icon{font-size:56px;margin-bottom:20px;}
+#success h2{font-size:24px;font-weight:800;letter-spacing:-.03em;margin-bottom:12px;}
+#success h2 em{font-style:normal;background:linear-gradient(110deg,var(--purple),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+#success p{font-size:14px;color:var(--muted);line-height:1.7;max-width:380px;margin:0 auto 32px;}
+.summary-box{background:rgba(255,255,255,.04);border:1px solid var(--border);border-radius:14px;padding:20px 24px;text-align:left;margin-bottom:28px;}
+.summary-row{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.05);font-size:13px;}
+.summary-row:last-child{border-bottom:none;}
+.summary-key{color:var(--muted);flex-shrink:0;}
+.summary-val{color:#fff;text-align:right;font-weight:500;}
+.copy-btn{width:100%;padding:13px;background:rgba(255,255,255,.06);border:1px solid var(--border);color:#fff;border-radius:10px;font:600 14px 'Inter',sans-serif;cursor:pointer;transition:background .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.copy-btn:hover{background:rgba(255,255,255,.1);}
+.copy-btn.copied{border-color:rgba(52,211,153,.4);color:#34d399;}
+
+@media(max-width:600px){
+  .form-card{padding:32px 24px;}
+  .form-row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<div class="bg-glow"></div>
+
+<nav>
+  <a class="logo" href="index.html"><em>George Tobias</em></a>
+  <a class="nav-back" href="index.html">← Back to site</a>
+</nav>
+
+<main>
+  <div class="page-header">
+    <div class="eyebrow"><span></span> Free Quote</div>
+    <h1>Tell me about your <em>project</em></h1>
+    <p>Fill this out in 2 minutes and I'll send you a quote within 24 hours. No commitment needed.</p>
+  </div>
+
+  <div class="form-card">
+
+    <!-- step indicators -->
+    <div class="step-indicator" id="stepIndicator">
+      <div class="step-dot active" id="dot1">1</div>
+      <div class="step-line" id="line1"></div>
+      <div class="step-dot" id="dot2">2</div>
+      <div class="step-line" id="line2"></div>
+      <div class="step-dot" id="dot3">3</div>
+    </div>
+
+    <!-- step 1: basics -->
+    <div class="step active" id="step1">
+      <div class="step-title">Your Business</div>
+      <div class="step-sub">Tell me the basics so I understand what you do.</div>
+      <div class="form-group">
+        <label>Your name</label>
+        <input type="text" id="clientName" placeholder="e.g. John Smith">
+      </div>
+      <div class="form-group">
+        <label>Business name</label>
+        <input type="text" id="bizName" placeholder="e.g. Smith Barbershop">
+      </div>
+      <div class="form-group">
+        <label>What does your business do?</label>
+        <textarea id="bizDesc" placeholder="e.g. We're a barbershop in London offering premium haircuts and beard trims for men..."></textarea>
+      </div>
+      <div class="form-group">
+        <label>Who are your customers?</label>
+        <input type="text" id="audience" placeholder="e.g. Men aged 18–40 in London">
+      </div>
+      <div class="btn-row">
+        <button class="btn-next" onclick="goStep(2)">Next →</button>
+      </div>
+    </div>
+
+    <!-- step 2: website details -->
+    <div class="step" id="step2">
+      <div class="step-title">Website Details</div>
+      <div class="step-sub">What kind of site do you need and how should it look?</div>
+      <div class="form-group">
+        <label>How many pages do you need?</label>
+        <select id="pages">
+          <option value="">Select...</option>
+          <option>1 page (landing page)</option>
+          <option>2–3 pages (Home, About, Contact)</option>
+          <option>4–5 pages (full business site)</option>
+          <option>6+ pages</option>
+          <option>Not sure — advise me</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>What should the website do?</label>
+        <select id="goal">
+          <option value="">Select main goal...</option>
+          <option>Get people to contact me</option>
+          <option>Show my work / portfolio</option>
+          <option>Sell products online</option>
+          <option>Build brand awareness</option>
+          <option>Get bookings / appointments</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Pick the vibe (select all that apply)</label>
+        <div class="vibe-wrap" id="vibeWrap">
+          <div class="vibe-pill" onclick="toggleVibe(this)">Modern & Clean</div>
+          <div class="vibe-pill" onclick="toggleVibe(this)">Bold & Loud</div>
+          <div class="vibe-pill" onclick="toggleVibe(this)">Minimalist</div>
+          <div class="vibe-pill" onclick="toggleVibe(this)">Luxury / Premium</div>
+          <div class="vibe-pill" onclick="toggleVibe(this)">Fun & Colourful</div>
+          <div class="vibe-pill" onclick="toggleVibe(this)">Dark & Techy</div>
+          <div class="vibe-pill" onclick="toggleVibe(this)">Warm & Friendly</div>
+          <div class="vibe-pill" onclick="toggleVibe(this)">Corporate / Professional</div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Any websites you like? (paste links or describe)</label>
+        <textarea id="inspo" placeholder="e.g. I like apple.com — clean and simple. Or something dark like stripe.com" style="min-height:80px;"></textarea>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="goStep(1)">← Back</button>
+        <button class="btn-next" onclick="goStep(3)">Next →</button>
+      </div>
+    </div>
+
+    <!-- step 3: budget & contact -->
+    <div class="step" id="step3">
+      <div class="step-title">Budget & Contact</div>
+      <div class="step-sub">Almost done — just need your budget and how to reach you.</div>
+      <div class="form-group">
+        <label>Your budget</label>
+        <select id="budget">
+          <option value="">Select range...</option>
+          <option>Under $150</option>
+          <option>$150 – $400</option>
+          <option>$400 – $800</option>
+          <option>$800+</option>
+          <option>Not sure yet</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>When do you need it?</label>
+        <select id="deadline">
+          <option value="">Select timeframe...</option>
+          <option>ASAP (within a week)</option>
+          <option>Within 2 weeks</option>
+          <option>Within a month</option>
+          <option>No rush</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Your email</label>
+        <input type="email" id="clientEmail" placeholder="you@email.com">
+      </div>
+      <div class="form-group">
+        <label>Anything else I should know? (optional)</label>
+        <textarea id="extra" placeholder="e.g. I already have a logo, I need a booking system, I want it in Spanish too..." style="min-height:80px;"></textarea>
+      </div>
+      <div class="btn-row">
+        <button class="btn-back" onclick="goStep(2)">← Back</button>
+        <button class="btn-next" onclick="submitForm()">Submit →</button>
+      </div>
+    </div>
+
+    <!-- success -->
+    <div id="success">
+      <div class="success-icon">🎉</div>
+      <h2>Got it! I'll be in <em>touch soon.</em></h2>
+      <p>Here's a summary of your project. Copy it and save it — or just wait for my reply within 24 hours.</p>
+      <div class="summary-box" id="summaryBox"></div>
+      <button class="copy-btn" id="copyBtn" onclick="copyBrief()">
+        <svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="9" rx="2"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1"/></svg>
+        Copy project brief
+      </button>
+    </div>
+
+  </div>
+</main>
+
+<script>
+let currentStep = 1;
+
+function goStep(n) {
+  // basic validation
+  if (n > currentStep) {
+    if (currentStep === 1) {
+      if (!document.getElementById('clientName').value.trim()) { alert('Please enter your name.'); return; }
+      if (!document.getElementById('bizName').value.trim()) { alert('Please enter your business name.'); return; }
+      if (!document.getElementById('bizDesc').value.trim()) { alert('Please describe your business.'); return; }
+    }
+    if (currentStep === 2) {
+      if (!document.getElementById('pages').value) { alert('Please select how many pages you need.'); return; }
+    }
+    if (currentStep === 3) {
+      if (!document.getElementById('clientEmail').value.trim()) { alert('Please enter your email.'); return; }
+    }
+  }
+
+  document.getElementById('step' + currentStep).classList.remove('active');
+  currentStep = n;
+  document.getElementById('step' + n).classList.add('active');
+  updateIndicator();
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
+
+function updateIndicator() {
+  for (let i = 1; i <= 3; i++) {
+    const dot = document.getElementById('dot' + i);
+    dot.classList.remove('active', 'done');
+    if (i < currentStep) { dot.classList.add('done'); dot.textContent = '✓'; }
+    else if (i === currentStep) { dot.classList.add('active'); dot.textContent = i; }
+    else dot.textContent = i;
+  }
+  for (let i = 1; i <= 2; i++) {
+    document.getElementById('line' + i).classList.toggle('done', i < currentStep);
+  }
+}
+
+function toggleVibe(el) { el.classList.toggle('selected'); }
+
+function getVibes() {
+  return [...document.querySelectorAll('.vibe-pill.selected')].map(p => p.textContent).join(', ') || 'Not specified';
+}
+
+function submitForm() {
+  if (!document.getElementById('clientEmail').value.trim()) { alert('Please enter your email.'); return; }
+
+  const data = {
+    name:     document.getElementById('clientName').value,
+    biz:      document.getElementById('bizName').value,
+    desc:     document.getElementById('bizDesc').value,
+    audience: document.getElementById('audience').value,
+    pages:    document.getElementById('pages').value,
+    goal:     document.getElementById('goal').value,
+    vibe:     getVibes(),
+    inspo:    document.getElementById('inspo').value || 'None provided',
+    budget:   document.getElementById('budget').value || 'Not specified',
+    deadline: document.getElementById('deadline').value || 'Not specified',
+    email:    document.getElementById('clientEmail').value,
+    extra:    document.getElementById('extra').value || 'None',
+  };
+
+  fetch('https://formspree.io/f/mbdwdpyr', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify(data)
+  }).catch(() => {});
+
+  // hide steps, show success
+  document.getElementById('step3').classList.remove('active');
+  document.getElementById('stepIndicator').style.display = 'none';
+  document.getElementById('success').style.display = 'block';
+
+  // build summary
+  const rows = [
+    ['Client',    data.name],
+    ['Business',  data.biz],
+    ['About',     data.desc],
+    ['Audience',  data.audience],
+    ['Pages',     data.pages],
+    ['Goal',      data.goal],
+    ['Vibe',      data.vibe],
+    ['Inspo',     data.inspo],
+    ['Budget',    data.budget],
+    ['Deadline',  data.deadline],
+    ['Email',     data.email],
+    ['Notes',     data.extra],
+  ];
+  document.getElementById('summaryBox').innerHTML = rows.map(([k, v]) =>
+    `<div class="summary-row"><span class="summary-key">${k}</span><span class="summary-val">${v}</span></div>`
+  ).join('');
+
+  // store brief for copy
+  window._brief = rows.map(([k,v])=>`${k}: ${v}`).join('\n');
+}
+
+function copyBrief() {
+  navigator.clipboard.writeText(window._brief).then(() => {
+    const btn = document.getElementById('copyBtn');
+    btn.classList.add('copied');
+    btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="2,8 6,12 14,4"/></svg> Copied!';
+    setTimeout(() => {
+      btn.classList.remove('copied');
+      btn.innerHTML = '<svg width="15" height="15" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="5" width="9" height="9" rx="2"/><path d="M3 11H2a1 1 0 01-1-1V2a1 1 0 011-1h8a1 1 0 011 1v1"/></svg> Copy project brief';
+    }, 2500);
+  });
+}
+</script>
+</body>
+</html>
